@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic INV Company Data (Thai)</title>
+
+    <!-- Import the Icon Library -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <link rel="stylesheet" href="inv-company-setup.css">
+
+</head>
+
+<body id="body">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="all_inv_office_insert_data_content">
+        <h1>
+            Dynamic INV Company Data
+            <span id="highlighted_country_text">THAILAND</span>
+        </h1>
+
+        <textarea id="dataInput" placeholder="Paste your data here"></textarea>
+        <button onclick="playSoundEffect('click'); deleteTextAre()">Reset</button>
+    </div>
+
+
+
+
+
+
+
+
+
+    <section id="whole_invoice_company_section_id">
+
+
+        <div id="proforma_invoice_and_logo_div_id">
+
+
+            <div class="top_left_inv_company_detials_div_class" id="top_left_inv_company_orignal_div_id">
+
+                <img src="season-logo.jpg" id="inv_comp_logo">
+
+                <p>548, Level 37 One City Center, Ploenchit Road</p>
+                <p>Lumpini Pathumwan, Bangkok 10330 (The Premises)</p>
+                <p>Email: reservation@seasonb2b.com</p>
+
+            </div>
+
+            <div class="top_left_inv_company_detials_div_class" id="top_left_inv_company_golden_div_id"
+                style="display: none;">
+
+                <p>وكالة جزر الاحلام للسفر والسياحة</p>
+                <p>سلامه الوافي , 8470 , حي النواريه</p>
+                <p>مكة ,24215 المملكة العربية السعودية</p>
+                <p>تلفون رقم: 966566506457</p>
+                <p>الرقم الضريبي: 310155789100003</p>
+
+            </div>
+
+
+
+
+
+
+            <div id="proforma_invoice_date_and_number_div_id">
+
+                <p style="font-weight: bolder;">PROFORMA INVOICE</p>
+
+                <p id="today_inv_company_date_p_id"></p>
+
+                <div id="proforma_invoice_number_div_id">
+                    <p>Inv No: S</p>
+                    <p id="current_used_inv_number_span_id"></p>
+                    <p id="current_used_rev_number_span_id" class="bold_text"></p>
+                </div>
+
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+
+        <div id="invoice_company_guest_info_div_id">
+
+            <br>
+            <br>
+            <br>
+            <br>
+
+
+            <div class="invoice_company_guest_info_text_div">
+
+                <div id="invoice_company_guest_name_div_id">
+                    <p>UP TO:</p>
+                    <p id="current_used_company_name_p_id" class="bold_text upper_case_text"></p>
+                    <p id="current_used_guest_name_p_id"></p>
+                </div>
+
+
+
+
+                <div id="invoice_company_guest_code_div">
+                    <p id="invoice_company_guest_code_title">Code: </p>
+                    <p id="invoice_company_guest_code_value"></p>
+                </div>
+
+
+            </div>
+
+
+
+            <div id="invoice_company_golden_under_guest_name_info_div"
+                style="font-size: 1.4rem; text-align: left; padding: 0 220px; direction: rtl; margin: 30px 0; display: none;">
+                <p>شركة الوكالة الذهبية العالمية للسفر والسياحة المحدودة</p>
+                <p>الرقم الضريبي : 301119158500003</p>
+                <p>العنوان : المدينة المنورة , الاسكان , تاح الاصفهنجي , 42317</p>
+            </div>
+
+
+
+            <br>
+
+            <p id="invoice_company_thank_you_text_p_id"
+                style="font-size: 1.4rem; text-align: left; padding: 0 220px; direction: ltr;">
+                Thank you for your interest in our specially designed package for your holidays in Thailand.
+                Please find the pricing below for a few options that will surely answer your request, and I remain at
+                your disposal for further information or any modification of your itinerary or accommodation.
+            </p>
+
+        </div>
+
+
+
+        <br>
+
+
+
+        <div id="main_inv_company_row_id" class="invoice_company_row_div_class">
+            <div>
+                <p>Period</p>
+            </div>
+            <div>
+                <p>Accommodation</p>
+            </div>
+            <div>
+                <p>Location</p>
+            </div>
+            <div>
+                <p>Length of stay</p>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <div id="invoice_company_main_table_div_id">
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <br>
+
+
+
+        <p id="the_full_payment_is_required_2_weeks_prior_arrival_p_id">#THE FULL PAYMENT IS REQUIRED 2 WEEKS PRIOR
+            ARRIVAL#</p>
+
+
+
+
+
+
+        <br>
+        <br>
+
+
+
+
+
+
+        <div id="payment_details_1" class="invoice_company_bottom_payment_info_div_class" style="display: none;">
+
+            <p>Please refer to above of your term of payment and settle your payment to our bank detail
+                below</p>
+
+
+            <pre>A/C Name                     : وكالة جزر الأحلام</pre>
+            <pre>Bank Name                   : NCB الأهلي</pre>
+            <pre>Account                        : 00800000601606</pre>
+            <pre>IBAN                            : SA8710000000800000601606</pre>
+
+
+
+            <br>
+
+
+            <p style="font-weight: bolder;">CANCELLATION & NO SHOW POLICY</p>
+
+
+            <p>* Cancellation or change in length of stay within 14 days prior to arrival on the normal season or 21
+                days prior to arrival on high
+                season (June-Aug) will charge 100% penalty</p>
+            <p>* No-show charges: 100% of Booking Amount</p>
+            <p>* Domestic flight cancellation depends on the flight refund policy</p>
+
+        </div>
+
+
+
+
+
+
+        <div id="payment_details_2" class="invoice_company_bottom_payment_info_div_class" style="display: none;">
+
+            <p>Please refer to above of your term of payment and settle your payment to our bank detail
+                below</p>
+
+
+            <pre>A/C Name                     : PT Fanadiq Indonesia Jaya</pre>
+            <pre>Bank Name                   : Mandiri</pre>
+            <pre>Account                        : 1210007258696</pre>
+
+
+            <br>
+            <br>
+
+
+            <pre>A/C Name                     : وكالة جزر الأحلام</pre>
+            <pre>Bank Name                   : NCB الأهلي</pre>
+            <pre>Account                        : 00800000601606</pre>
+            <pre>IBAN                            : SA8710000000800000601606</pre>
+
+
+
+            <br>
+
+
+            <p style="font-weight: bolder;">CANCELLATION & NO SHOW POLICY</p>
+
+
+            <p>* Cancellation or change in length of stay within 14 days prior to arrival on the normal season or 21
+                days prior to arrival on high
+                season (June-Aug) will charge 100% penalty</p>
+            <p>* No-show charges: 100% of Booking Amount</p>
+            <p>* Domestic flight cancellation depends on the flight refund policy</p>
+
+        </div>
+
+
+
+
+        <div id="payment_details_3" class="invoice_company_bottom_payment_info_div_class" style="display: none;">
+
+            <p>Please refer to above of your term of payment and settle your payment to our bank detail
+                below</p>
+
+
+            <pre>A/C Name                     : PT. FANADIQ INDONESIA</pre>
+            <pre>Bank Name                   : BRI</pre>
+            <pre>Account                        : 039001001477304</pre>
+
+
+            <br>
+
+
+            <p style="font-weight: bolder;">CANCELLATION & NO SHOW POLICY</p>
+
+
+            <p>* Cancellation or change in length of stay within 14 days prior to arrival on the normal season or 21
+                days prior to arrival on high
+                season (June-Aug) will charge 100% penalty</p>
+            <p>* No-show charges: 100% of Booking Amount</p>
+            <p>* Domestic flight cancellation depends on the flight refund policy</p>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Store the data here for later refrence when importing -->
+        <p id="store_google_sheet_inv_orignal_month_value" style="display: none;"></p>
+        <p id="store_google_sheet_inv_orignal_year_value" style="display: none;"></p>
+        <p id="store_google_sheet_guest_name" style="display: none;"></p>
+        <p id="store_google_sheet_company_name" style="display: none;"></p>
+        <p id="store_google_sheet_inv_number" style="display: none;"></p>
+        <p id="store_google_sheet_current_inv_company_rev_number_id" style="display: none;">0</p>
+
+
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Choose pdf file name box -->
+    <div id="name_pdf_file_div">
+        <input type="text" id="pdf_file_name_input_id" class="dynamic_direction_input_class" placeholder="File Name">
+        <button id="check_pdf_name_button" onclick="checkThePdfNameToDownload()">Download</button>
+    </div>
+
+
+    <div id="export_package_pdf_div_id">
+        <button onclick="openPdfDownloadBox()">Download</button>
+    </div>
+
+    <div id="import_saved_data_from_database_id">
+        <button onclick="showOverlay('import_google_sheet_data_names_dropdown')">Import</button>
+    </div>
+
+
+
+
+
+
+    <!-- Dropdown Div For Hotel Locations -->
+    <div id="import_google_sheet_data_names_dropdown"
+        class="searchable_names_dropdown_class google_sheet_dropdown_div_class">
+
+        <div class="search_bar_div_class">
+            <input type="text" id="import_google_sheet_data_names_search_bar_input_id" class="search_bar_input_class"
+                placeholder="Search" style="direction: ltr;">
+        </div>
+
+
+
+        <div id="all_google_sheet_stored_data_names_for_importing_data_div"
+            class="company_names_options_dropdown_class">
+            <!-- Dynamic JS Code Here -->
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+
+    <!-- Download PDF Link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+
+
+
+
+    <script src="inv-company-database.js"></script>
+    <script src="inv-company-setup.js"></script>
+</body>
+
+</html>
