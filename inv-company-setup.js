@@ -907,11 +907,6 @@ function processInvoiceData(data) {
 
 
 
-        /* Check if the company name is 'RIDA' to make it in BAHT */
-        if (agencyUpper === 'RIDA' || agencyUpper === 'RIDA TRAVEL') {
-            currency = "BAHT";
-
-        }
 
 
 
@@ -943,18 +938,67 @@ function processInvoiceData(data) {
         }
 
 
-        const rowDiv = document.createElement("div");
-        rowDiv.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
-        rowDiv.innerHTML = `
+
+
+        /* in case the currency is in BAHT then make the 3 rows in the price */
+        if (currency === "BAHT") {
+
+            const rowDiv_1 = document.createElement("div");
+            const rowDiv_2 = document.createElement("div");
+            const rowDiv_3 = document.createElement("div");
+
+            rowDiv_1.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
+            rowDiv_2.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
+            rowDiv_3.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
+            
+            rowDiv_1.innerHTML = `
+                <div>
+                    <p class="duplicate_this_element_class">Total PAYMENT SAR ${formattedTotal}</p>
+                </div>
+                <div style="border-right: 0.5px solid black;">
+                    <p class="red_text_color_class" style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
+                </div>
+            `;
+
+            rowDiv_2.innerHTML = `
+                <div>
+                    <p class="duplicate_this_element_class">COMMISION SYABAB THAILAND 80%</p>
+                </div>
+                <div style="border-right: 0.5px solid black;">
+                    <p class="red_text_color_class" style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
+                </div>
+            `;
+
+            rowDiv_3.innerHTML = `
+                <div>
+                    <p class="duplicate_this_element_class">MUST BE TRANSFER TO SEASON TRAVEL</p>
+                </div>
+                <div style="border-right: 0.5px solid black;">
+                    <p class="red_text_color_class" style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
+                </div>
+            `;
+
+            totalDiv.appendChild(rowDiv_1);
+            totalDiv.appendChild(rowDiv_2);
+            totalDiv.appendChild(rowDiv_3);
+            document.getElementById("invoice_company_main_table_div_id").appendChild(totalDiv);
+
+
+        } else {
+
+            const rowDiv = document.createElement("div");
+            rowDiv.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
+            rowDiv.innerHTML = `
             <div>
-                <p class="duplicate_this_element_class">Total</p>
+            <p class="duplicate_this_element_class">Total</p>
             </div>
             <div style="border-right: 0.5px solid black;">
-                <p style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${formattedTotal}</p>
+            <p style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${formattedTotal}</p>
             </div>`;
 
-        totalDiv.appendChild(rowDiv);
-        document.getElementById("invoice_company_main_table_div_id").appendChild(totalDiv);
+            totalDiv.appendChild(rowDiv);
+            document.getElementById("invoice_company_main_table_div_id").appendChild(totalDiv);
+        }
     };
 
 
