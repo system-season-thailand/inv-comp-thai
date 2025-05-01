@@ -278,6 +278,8 @@ function processInvoiceData(data) {
         finalTravelAgency = "SECRET";
     } else if (travelAgencyUpper.includes("TURKI")) {
         finalTravelAgency = "MR. TURKI";
+    } else if (travelAgencyUpper.includes("TURKEY")) {
+        finalTravelAgency = "MR. TURKEY";
     } else if (travelAgencyUpper.includes("TARIQ")) {
         finalTravelAgency = "MR. TARIQ";
     } else if (travelAgencyUpper.includes("SAMI")) {
@@ -442,17 +444,21 @@ function processInvoiceData(data) {
 
                 const nights = parseInt(cols[6]?.trim() || "0", 10); // "No of Nights" column
 
+                const upperHotel = hotel.toUpperCase();
+
+                const accommodationOnlyHotels = ["AL JUMEIRAH", "MARSEILLIA", "AL ANDALUS", "NEOM"];
+
+                const details = accommodationOnlyHotels.some(name => upperHotel.includes(name))
+                    ? "Accommodation Only"
+                    : "Including Breakfast";
+
                 hotels.push({
                     hotel,
                     hotelLocation,
                     roomType,
                     startDate,
                     endDate,
-                    details: (hotel.toUpperCase() === "AL JUMEIRAH RESORT & VILLAS" ||
-                        hotel.toUpperCase() === "MARSEILLIA HILLS PUNCAK" ||
-                        hotel.toUpperCase() === "AL ANDALUS RESORT PUNCAK" || hotel.toUpperCase() === "NEOM VILLA")
-                        ? "Accommodation Only"
-                        : "Including Breakfast",
+                    details,
                     nights,
                     unitAmount,
                 });
@@ -873,9 +879,9 @@ function processInvoiceData(data) {
         let currency = "SAR"; // Default currency
         if (agencyUpper.includes("AL EZZ")) {
             currency = "USD";
-        } else if (guestByUpper.includes("RAYAN") || guestByUpper.includes("TURKI") || guestByUpper.includes("TARIQ") || guestByUpper.includes("SECRET") || guestByUpper.includes("TURKY")) {
+        } else if (guestByUpper.includes("RAYAN") || guestByUpper.includes("TURKI") || guestByUpper.includes("TURKEY") || guestByUpper.includes("TARIQ") || guestByUpper.includes("SECRET") || guestByUpper.includes("TURKY")) {
             currency = "BAHT";
-        } else if (agencyUpper.includes("RAYAN") || agencyUpper.includes("TURKI") || agencyUpper.includes("TARIQ") || agencyUpper.includes("SECRET") || agencyUpper.includes("TURKY")) {
+        } else if (agencyUpper.includes("RAYAN") || agencyUpper.includes("TURKI") || agencyUpper.includes("TURKEY") || agencyUpper.includes("TARIQ") || agencyUpper.includes("SECRET") || agencyUpper.includes("TURKY")) {
             currency = "BAHT";
         }
 
@@ -950,7 +956,7 @@ function processInvoiceData(data) {
             rowDiv_1.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
             rowDiv_2.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
             rowDiv_3.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
-            
+
             rowDiv_1.innerHTML = `
                 <div>
                     <p class="duplicate_this_element_class">Total PAYMENT SAR ${formattedTotal}</p>
