@@ -615,59 +615,85 @@ function processInvoiceData(data) {
 
 
     const getFlightDates = () => {
+        // Select all hotel rows from the DOM
         const hotelRows = document.querySelectorAll(".invoice_company_row_div_class");
 
-        let locations = [];
-        let checkOutDates = [];
+        let locations = [];      // To store normalized hotel locations
+        let checkOutDates = [];  // To store extracted checkout dates
 
+        // Loop through each hotel row
         hotelRows.forEach(row => {
+            // Get the hotel location text
             const location = row.querySelector(".hotel_location_value_class")?.innerText.trim();
+
+            // Get the check-in and check-out date range text (e.g., "10 Jan 2025 - 12 Jan 2025")
             const dateRange = row.querySelector(".hotel_check_in_out_date_class")?.innerText.trim();
 
+            // Proceed only if both location and date range exist
             if (location && dateRange) {
-                const [_, checkOutDate] = dateRange.split(" - "); // Extract checkout date
+                // Extract the checkout date (after the " - ")
+                const [_, checkOutDate] = dateRange.split(" - ");
 
-                // Normalize specific cities to "Bangkok"
+                // Normalize location: Treat "Pattaya" as "Bangkok"
                 const normalizedLocation = ["Pattaya"].includes(location) ? "Bangkok" : location;
 
+                // Save normalized location and corresponding checkout date
                 locations.push(normalizedLocation);
                 checkOutDates.push(checkOutDate);
             }
         });
 
-        let firstFlightDate = null;
-        let lastFlightDate = null;
+        let firstFlightDate = null; // To store the date of flight leaving Bangkok
+        let lastFlightDate = null;  // To store the date of flight returning to Bangkok
 
+        // Loop through location sequence to detect transitions
         for (let i = 0; i < locations.length - 1; i++) {
+            // Detect leaving Bangkok to another city
             if (locations[i] === "Bangkok" && locations[i + 1] !== "Bangkok") {
-                firstFlightDate = checkOutDates[i]; // Leaving Bangkok
+                firstFlightDate = checkOutDates[i];
             }
+            // Detect returning from another city to Bangkok
             if (locations[i] !== "Bangkok" && locations[i + 1] === "Bangkok") {
-                lastFlightDate = checkOutDates[i]; // Returning to Bangkok
+                lastFlightDate = checkOutDates[i];
             }
         }
 
+        // If no flight out of Bangkok is found, return N/A
+        if (!firstFlightDate && lastFlightDate) {
+            const [day, month, year] = lastFlightDate.split(" ");
+            return `${day} ${month} ${year}`;
+        }
         if (!firstFlightDate) {
-            return "N/A"; // No valid flight period
+            return "N/A";
         }
 
+
+        // Split the first flight date into day, month, and year
         const [firstDay, firstMonth, firstYear] = firstFlightDate.split(" ");
 
+        // If only the first flight date is available (no return flight)
         if (!lastFlightDate) {
-            return `${firstDay} ${firstMonth} ${firstYear}`; // Only firstFlightDate exists
+            return `${firstDay} ${firstMonth} ${firstYear}`;
         }
 
+        // Split the last flight date into day, month, and year
         const [lastDay, lastMonth, lastYear] = lastFlightDate.split(" ");
 
+        // Format the output based on the year and month similarity
         if (firstYear === lastYear) {
             if (firstMonth === lastMonth) {
-                return `${firstDay} - ${lastDay} ${firstMonth} ${firstYear}`; // Same month
+                // Same month and year
+                return `${firstDay} - ${lastDay} ${firstMonth} ${firstYear}`;
             }
-            return `${firstDay} ${firstMonth} - ${lastDay} ${lastMonth} ${firstYear}`; // Different month
+            // Same year but different months
+            return `${firstDay} ${firstMonth} - ${lastDay} ${lastMonth} ${firstYear}`;
         } else {
-            return `${firstDay} ${firstMonth} ${firstYear} - ${lastDay} ${lastMonth} ${lastYear}`; // Different year
+            // Different years
+            return `${firstDay} ${firstMonth} ${firstYear} - ${lastDay} ${lastMonth} ${lastYear}`;
         }
+
     };
+
 
 
 
@@ -702,6 +728,40 @@ function processInvoiceData(data) {
         return flightDestinations.join("<br>");
     };
 
+    const parseIndoMonthToEnglish = (month) => {
+        const monthMap = {
+            "Januari": "January",
+            "Februari": "February",
+            "Maret": "March",
+            "April": "April",
+            "Mei": "May",
+            "Juni": "June",
+            "Juli": "July",
+            "Agustus": "August",
+            "September": "September",
+            "Oktober": "October",
+            "November": "November",
+            "Desember": "December"
+        };
+        return monthMap[month] || month;
+    };
+
+    const formatDateRange = (start, end, fallbackYear = "2025") => {
+        if (!start || !end) return "N/A";
+
+        const [startDay, startMonthIndo] = start.split(" ");
+        const [endDay, endMonthIndo] = end.split(" ");
+
+        const startMonth = parseIndoMonthToEnglish(startMonthIndo);
+        const endMonth = parseIndoMonthToEnglish(endMonthIndo || startMonthIndo);
+
+        if (startMonth === endMonth) {
+            return `${startDay} - ${endDay} ${startMonth} ${fallbackYear}`;
+        } else {
+            return `${startDay} ${startMonth} - ${endDay} ${endMonth} ${fallbackYear}`;
+        }
+    };
+
     const createFlightRow = (data) => {
         if (!data) return;
 
@@ -709,12 +769,25 @@ function processInvoiceData(data) {
         flightDiv.id = "flight_tickets_row_div_id";
 
         // Generate the flight dates dynamically
-        const flightDates = getFlightDates();
+        let flightDates = getFlightDates();
+
+        // If dynamic dates are "N/A", use startDate and endDate from `data`
+        if (flightDates === "N/A" && data.startDate && data.endDate) {
+            flightDates = formatDateRange(data.startDate, data.endDate);
+            console.log(data.startDate, data.endDate)
+        }
+
+
+        let getFlightDestinationText = getFlightDestination();
+        if (getFlightDestinationText === '') {
+            getFlightDestinationText = '<span class="flight_destination_text_options_class red_text_color_class">N/A</span>'
+        }
+
+
 
         const rowDiv = document.createElement("div");
         rowDiv.className = "invoice_company_row_div_class";
 
-        // Add all flight dates as <p> elements
         rowDiv.innerHTML = `
             <div>
                 <p contenteditable="true">${flightDates}</p>
@@ -723,7 +796,7 @@ function processInvoiceData(data) {
                 <p class="duplicate_this_element_class" contenteditable="true" style="padding: 25px 0">Domestic Flight Tickets</p>
             </div>
             <div>
-                <p class="flight_destination_text_options_class" contenteditable="true">${getFlightDestination()}</p>
+                <p contenteditable="true">${getFlightDestinationText}</p>
             </div>
             <div style="border-right: 0.5px solid black;">
                 <p class="red_text_color_class flight_amount_text_options_class" contenteditable="true">${data.quantity} Person</p>  
