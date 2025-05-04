@@ -382,8 +382,8 @@ function processInvoiceData(data) {
             // Check if any column contains "TICKET"
             if (cols.some(col => /TICK/i.test(col))) {
 
-                const startDate = cols[3]?.trim();
-                const endDate = cols[4]?.trim();
+                const startDate = cols[4]?.trim();
+                const endDate = cols[5]?.trim();
                 const quantity = cols[7]?.trim();
 
                 flights = {
