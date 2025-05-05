@@ -1020,7 +1020,7 @@ function processInvoiceData(data) {
 
 
         /* in case the currency is in BAHT then make the 3 rows in the price */
-        if (currency === "BAHT") {
+        if (currency === "BAHT" && document.getElementById("all_hotels_rows_div_id").innerHTML !== '') {
 
             const rowDiv_1 = document.createElement("div");
             const rowDiv_2 = document.createElement("div");
@@ -1032,7 +1032,7 @@ function processInvoiceData(data) {
 
             rowDiv_1.innerHTML = `
                 <div>
-                    <p class="duplicate_this_element_class">Total PAYMENT SAR ${formattedTotal}</p>
+                    <p class="duplicate_this_element_class">TOTAL PAYMENT SAR ${formattedTotal}</p>
                 </div>
                 <div style="border-right: 0.5px solid black;">
                     <p class="red_text_color_class" style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
@@ -1069,7 +1069,7 @@ function processInvoiceData(data) {
             rowDiv.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
             rowDiv.innerHTML = `
             <div>
-            <p class="duplicate_this_element_class">Total</p>
+            <p class="duplicate_this_element_class">TOTAL</p>
             </div>
             <div style="border-right: 0.5px solid black;">
             <p style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${formattedTotal}</p>
