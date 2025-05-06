@@ -563,7 +563,9 @@ function processInvoiceData(data) {
 
 
 
+    /* Pass all filtered text to a function to extract the data */
     const { hotels, flights, transport, visa, total } = extractData(data);
+
 
     
 
