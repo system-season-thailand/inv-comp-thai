@@ -1062,8 +1062,9 @@ function processInvoiceData(data) {
 
 
 
-        /* in case the currency is in BAHT then make the 3 rows in the price */
-        if (currency === "BAHT" && document.getElementById("all_hotels_rows_div_id").innerHTML !== '') {
+        const keywords = ["RAYAN", "TURKI", "TURKEY", "TARIQ", "SECRET", "TURKY"];
+        if (keywords.some(word => agencyUpper.includes(word)) && document.getElementById("all_hotels_rows_div_id").innerHTML !== '') {
+
 
             const rowDiv_1 = document.createElement("div");
             const rowDiv_2 = document.createElement("div");
@@ -1078,7 +1079,7 @@ function processInvoiceData(data) {
                     <p class="duplicate_this_element_class">TOTAL PAYMENT SAR ${formattedTotal}</p>
                 </div>
                 <div style="border-right: 0.5px solid black;">
-                    <p class="red_text_color_class" style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
+                    <p class="red_text_color_class" style="padding: 5px 0">BAHT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
                 </div>
             `;
 
@@ -1087,7 +1088,7 @@ function processInvoiceData(data) {
                     <p class="duplicate_this_element_class">COMMISION SYABAB THAILAND 80%</p>
                 </div>
                 <div style="border-right: 0.5px solid black;">
-                    <p class="red_text_color_class" style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
+                    <p class="red_text_color_class" style="padding: 5px 0">BAHT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
                 </div>
             `;
 
@@ -1096,7 +1097,7 @@ function processInvoiceData(data) {
                     <p class="duplicate_this_element_class">MUST BE TRANSFER TO SEASON TRAVEL</p>
                 </div>
                 <div style="border-right: 0.5px solid black;">
-                    <p class="red_text_color_class" style="padding: 5px 0">${currency}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
+                    <p class="red_text_color_class" style="padding: 5px 0">BAHT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000</p>
                 </div>
             `;
 
