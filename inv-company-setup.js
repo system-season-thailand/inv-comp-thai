@@ -348,13 +348,13 @@ function processInvoiceData(data) {
     const normalizeExcelText = (rawText) => {
         const lines = rawText.split('\n');
         const normalizedLines = [];
-    
+
         let buffer = '';
         let inQuotedCell = false;
-    
+
         for (let line of lines) {
             const quoteCount = (line.match(/"/g) || []).length;
-    
+
             if (!inQuotedCell) {
                 if (quoteCount % 2 === 1) {
                     buffer = line;
@@ -371,17 +371,17 @@ function processInvoiceData(data) {
                 }
             }
         }
-    
+
         if (buffer.trim()) {
             normalizedLines.push(buffer);
         }
-    
+
         // ✨ Clean up each line: remove outer quotes from quoted fields
-        return normalizedLines.map(line => 
+        return normalizedLines.map(line =>
             line.replace(/"([^"]*)"/g, (_, inner) => inner.trim())
         );
     };
-    
+
 
 
 
@@ -567,7 +567,7 @@ function processInvoiceData(data) {
     const { hotels, flights, transport, visa, total } = extractData(data);
 
 
-    
+
 
     document.getElementById("invoice_company_main_table_div_id").innerHTML = "";
 
@@ -995,18 +995,12 @@ function processInvoiceData(data) {
 
         // Convert values to uppercase for case-insensitive comparison
         const agencyUpper = (travelAgency || "").toUpperCase();
-        const guestByUpper = (guestBy || "").toUpperCase();
 
         // Determine the currency
         let currency = "SAR"; // Default currency
         if (agencyUpper.includes("AL EZZ")) {
             currency = "USD";
-        } else if (guestByUpper.includes("RAYAN") || guestByUpper.includes("TURKI") || guestByUpper.includes("TURKEY") || guestByUpper.includes("TARIQ") || guestByUpper.includes("SECRET") || guestByUpper.includes("TURKY")) {
-            currency = "BAHT";
-        } else if (agencyUpper.includes("RAYAN") || agencyUpper.includes("TURKI") || agencyUpper.includes("TURKEY") || agencyUpper.includes("TARIQ") || agencyUpper.includes("SECRET") || agencyUpper.includes("TURKY")) {
-            currency = "BAHT";
         }
-
 
 
 
