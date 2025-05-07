@@ -995,11 +995,14 @@ function processInvoiceData(data) {
 
         // Convert values to uppercase for case-insensitive comparison
         const agencyUpper = (travelAgency || "").toUpperCase();
-
+        const guestByUpper = (guestBy || "").toUpperCase();
+        
         // Determine the currency
         let currency = "SAR"; // Default currency
         if (agencyUpper.includes("AL EZZ")) {
             currency = "USD";
+        } else if (guestByUpper.includes("RAYAN") || guestByUpper.includes("TURKI") || guestByUpper.includes("TURKEY") || guestByUpper.includes("TARIQ") || guestByUpper.includes("SECRET") || guestByUpper.includes("TURKY")) {
+            currency = "BAHT";
         }
 
 
