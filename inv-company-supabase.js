@@ -49,24 +49,8 @@ async function sendDataToSupabase() {
     const htmlContent = cleanHTML(document.getElementById("whole_invoice_company_section_id").innerHTML);
 
 
-    /* Get the user current month na dyear to store it in the supabase for later use when deleteing data */
-    const currentDate = new Date();
-
-    const inv_company_created_date_options = { month: 'long', year: 'numeric' };
-    const currentUserDate = currentDate.toLocaleString('en-US', inv_company_created_date_options);
-
-
-    const inv_company_current_user_date_options = {
-        weekday: 'long',     // Optional: "Monday", "Tuesday", etc.
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true         // Use false if you prefer 24-hour format
-    };
-    const currentUserFullDate = currentDate.toLocaleString('en-US', inv_company_current_user_date_options);
+    /* Get the found month in the inv company data */
+    const lastFoundMonthName = printLatestFullMonthName();
 
 
 
@@ -102,7 +86,7 @@ async function sendDataToSupabase() {
                     name: formattedName,
                     inv_company_thai_content: htmlContent,
                     inv_company_created_date: currentUserDate,
-                    inv_company_user_current_date: currentUserFullDate
+                    lastFoundMonthName: lastFoundMonthName
                 }])
                 .select();
 
