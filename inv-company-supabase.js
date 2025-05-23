@@ -5,7 +5,7 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 let new_or_imported_inv_company_variable = 'new_invoice_company';
 
 async function sendDataToSupabase() {
-    console.log('➡️ sendDataToSupabase function started');
+    /* console.log('➡️ sendDataToSupabase function started'); */
 
     const fileName = document.getElementById('pdf_file_name_input_id').value;
     const parts = fileName.split(' ');
@@ -20,7 +20,7 @@ async function sendDataToSupabase() {
         }
     }
 
-    console.log(`📅 Extracted Month: ${extractedMonth}, Year: ${extractedYear}`);
+    /* console.log(`📅 Extracted Month: ${extractedMonth}, Year: ${extractedYear}`); */
 
     document.getElementById('store_google_sheet_inv_orignal_month_value').innerText = extractedMonth;
     document.getElementById('store_google_sheet_inv_orignal_year_value').innerText = extractedYear;
@@ -30,15 +30,11 @@ async function sendDataToSupabase() {
     const revNumber = document.getElementById("current_used_rev_number_span_id")?.innerText.trim() || "";
 
     const formattedName = revNumber === '' ? `${invNumber} ${guestName}` : `${invNumber}-${revNumber} ${guestName}`;
-    console.log(`🧾 Formatted Name: ${formattedName}`);
+    /* console.log(`🧾 Formatted Name: ${formattedName}`); */
 
 
 
 
-
-
-
-    const htmlContent = cleanHTML(document.getElementById("whole_invoice_company_section_id").innerHTML);
 
 
     /* Get the found month in the inv company data */
@@ -81,7 +77,12 @@ async function sendDataToSupabase() {
 
 
         if (existing) {
-            console.log('🟡 Existing invoice found, updating HTML content only...');
+            /* Get the html elements ready to store */
+            const htmlContent = cleanHTML(document.getElementById("whole_invoice_company_section_id").innerHTML);
+
+
+
+            /* console.log('🟡 Existing invoice found, updating HTML content only...'); */
             const { data, error } = await supabase
                 .from('inv_comp_thai')
                 .update({ inv_company_thai_content: htmlContent })
@@ -95,15 +96,17 @@ async function sendDataToSupabase() {
         } else {
 
             /* Increase the number of the rev in case there was a value in the rev element */
-            if (document.getElementById("current_used_rev_number_span_id").innerText.includes('R')) {
-                /* Set Rev in the inv number */
-                let revNumValue = document.getElementById("store_google_sheet_current_inv_company_rev_number_id");
-                const currentStoredRev = parseInt(revNumValue.innerText, 10) || 0;
-                revNumValue.innerText = `${currentStoredRev + 1}`;
-            }
+            let revNumValue = document.getElementById("store_google_sheet_current_inv_company_rev_number_id");
+            const currentStoredRev = parseInt(revNumValue.innerText, 10) || 0;
+            revNumValue.innerText = `${currentStoredRev + 1}`;
 
 
-            console.log('🟢 No existing invoice, inserting new...');
+            /* Get the html elements ready to store */
+            const htmlContent = cleanHTML(document.getElementById("whole_invoice_company_section_id").innerHTML);
+
+
+
+            /* console.log('🟢 No existing invoice, inserting new...'); */
             const { data, error } = await supabase
                 .from('inv_comp_thai')
                 .insert([{
@@ -161,7 +164,7 @@ const fetchBatchFromSupabase = async () => {
         content: row.inv_company_thai_content?.trim()
     }));
 
-    console.log("📦 All fetched data:", allFetchedData);
+    /* console.log("📦 All fetched data:", allFetchedData); */
 
 };
 
@@ -174,11 +177,11 @@ const loadAllData = async () => {
     }
 
     container.innerHTML = '';
-    console.log("🧹 Cleared container");
+    /* console.log("🧹 Cleared container"); */
 
     await fetchBatchFromSupabase(); // assumes it fills allFetchedData globally
 
-    console.log("📦 allFetchedData contents:", allFetchedData);
+    /* console.log("📦 allFetchedData contents:", allFetchedData); */
 
     const allDataSet = new Set();
     const batchHTMLElements = [];
@@ -191,13 +194,11 @@ const loadAllData = async () => {
             h3.textContent = row.name;
 
             h3.onclick = function () {
-                console.log(`📥 You clicked: ${row.name}`);
+                /* console.log(`📥 You clicked: ${row.name}`); */
                 importContentForSelectedName(this);
             };
 
             batchHTMLElements.push(h3);
-        } else {
-            console.log(`⚠️ Duplicate or invalid name skipped: ${row.name}`);
         }
     });
 
@@ -208,7 +209,7 @@ const loadAllData = async () => {
         batchHTMLElements.reverse().forEach(el => {
             container.appendChild(el);
         });
-        console.log(`✅ Appended ${batchHTMLElements.length} h3 elements to container`);
+        /* console.log(`✅ Appended ${batchHTMLElements.length} h3 elements to container`); */
     }
 
     // Optional: trigger input filter if any
