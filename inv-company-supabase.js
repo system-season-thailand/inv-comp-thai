@@ -83,11 +83,15 @@ async function sendDataToSupabase() {
 
 
             /* console.log('🟡 Existing invoice found, updating HTML content only...'); */
-            const { data, error } = await supabase
-                .from('inv_comp_thai')
-                .update({ inv_company_thai_content: htmlContent })
+                        const { data, error } = await supabase
+                .from('inv_comp_indo')
+                .update({
+                    inv_company_thai_content: htmlContent,
+                    inv_company_last_found_month_name: lastFoundMonthName,
+                    inv_company_user_current_date: currentUserFullDate
+                })
                 .eq('name', formattedName)
-                .select(); // optional: to return the updated row
+                .select();
 
             if (error) console.error("❌ Update failed:", error);
             else console.log("✅ Updated invoice content only:", data[0]);
