@@ -83,8 +83,8 @@ async function sendDataToSupabase() {
 
 
             /* console.log('🟡 Existing invoice found, updating HTML content only...'); */
-                        const { data, error } = await supabase
-                .from('inv_comp_indo')
+            const { data, error } = await supabase
+                .from('inv_comp_thai')
                 .update({
                     inv_company_thai_content: htmlContent,
                     inv_company_last_found_month_name: lastFoundMonthName,
