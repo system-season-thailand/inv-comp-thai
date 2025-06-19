@@ -986,7 +986,7 @@ function processInvoiceData(data) {
     const createTransportationRow = (data) => {
         if (!data) return;
 
-        
+
         // ✅ Ensure hotel check-in/out dates are standardized
         fixHotelDateYears();
 
@@ -2244,5 +2244,11 @@ const printLatestFullMonthName = () => {
         return result;
     }
 
-    return null;
+    // if no date is found then return current user month and year
+    const now = new Date();
+    const currentMonth = now.toLocaleString("en-US", { month: "long" });
+    const currentYear = now.getFullYear();
+    const fallbackResult = `${currentMonth} ${currentYear}`;
+    console.log("Fallback to Current Month-Year:", fallbackResult);
+    return fallbackResult;
 };
