@@ -2278,7 +2278,7 @@ const printLatestFullMonthName = () => {
 
 
 // Make the invoice company logo image clickable to change its source
-(function setupLogoImagePicker() {
+function setupLogoImagePicker() {
     const logoImg = document.getElementById('inv_comp_logo');
     if (!logoImg) return;
 
@@ -2310,4 +2310,4 @@ const printLatestFullMonthName = () => {
             reader.readAsDataURL(file);
         }
     });
-})();
+};
