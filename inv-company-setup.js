@@ -192,16 +192,14 @@ function openPdfDownloadBox() {
 
 
 
-    // Get the current date
+    // Prefer values parsed from pasted data; fallback to current date
     let currentDate = new Date();
-
-    // Convert current month to Roman numeral
     let currentMonth = currentDate.getMonth() + 1;
-    let Roman_monthNumber = convertToRoman(currentMonth);
+    let Roman_monthNumber = document.getElementById("store_google_sheet_inv_orignal_month_value")?.innerText?.trim() || convertToRoman(currentMonth);
 
 
 
-    /* in 6 Apr 2026 delete the following if codes (I used them to avoid error since they do't exist in old saved inv company) */
+    /* in 6 Apr 2026 delete the following (two) if codes (I used them to avoid error since they do't exist in old saved inv company) */
     if (!document.getElementById("store_google_sheet_inv_orignal_month_value")) {
         const monthElement = document.createElement('p');
         monthElement.innerText = 'IV';
@@ -224,9 +222,12 @@ function openPdfDownloadBox() {
         document.getElementById("store_google_sheet_inv_orignal_month_value").innerText = Roman_monthNumber;
     }
 
-    // Get last two digits of the current year
+    // Get last two digits from pasted data year if available, else current year
     let currentYear = currentDate.getFullYear();
-    let lastTwoNumbersOfTheCurrentYear = currentYear % 100;
+    let storedTwoDigitYear = document.getElementById("store_google_sheet_inv_orignal_year_value")?.innerText?.trim();
+    let lastTwoNumbersOfTheCurrentYear = storedTwoDigitYear && /^\d{2}$/.test(storedTwoDigitYear)
+        ? parseInt(storedTwoDigitYear, 10)
+        : currentYear % 100;
 
     // Store year if not already set
     if (document.getElementById("store_google_sheet_inv_orignal_year_value").innerText === '') {
@@ -345,6 +346,22 @@ function processInvoiceData(data) {
         clientName = rows[3].split(":")[1].trim();
     }
 
+    // Extract two-digit year from the full invoice code (e.g., SEA-26-I-0001 -> 2026)
+    const invoiceLineRaw = rows[0].startsWith("GUEST BY") ? (rows[1] || "") : (rows[2] || "");
+    const invoiceCode = invoiceLineRaw.split(":")[1]?.trim() || "";
+    const codeParts = invoiceCode.split("-");
+    const twoDigitYearFromCode = codeParts.length >= 2 ? codeParts[1] : null;
+    const romanMonthFromCode = codeParts.length >= 3 ? codeParts[2].toUpperCase() : null;
+    const inferredInvoiceYear = twoDigitYearFromCode && /^\d{2}$/.test(twoDigitYearFromCode)
+        ? 2000 + parseInt(twoDigitYearFromCode, 10)
+        : new Date().getFullYear();
+
+    // Store Roman month and two-digit year for later use (e.g., PDF filename)
+    const storeMonthEl = document.getElementById("store_google_sheet_inv_orignal_month_value");
+    const storeYearEl = document.getElementById("store_google_sheet_inv_orignal_year_value");
+    if (storeMonthEl) storeMonthEl.innerText = romanMonthFromCode || storeMonthEl.innerText || '';
+    if (storeYearEl) storeYearEl.innerText = (twoDigitYearFromCode || storeYearEl.innerText || '').toString();
+
 
     // Try to extract travel agency from parentheses, fallback to guestBy if not found
     const travelAgency = guestBy.match(/\(([^)]+)\)/)?.[1] || guestBy;
@@ -418,7 +435,7 @@ function processInvoiceData(data) {
         const parts = dateStr.split(/[-/]/);
         if (parts.length === 2) {
             const [day, month] = parts;
-            const year = "2025";
+            const year = inferredInvoiceYear.toString();
 
             // Get the month's name from its number, or use the original month
             let monthName = Object.keys(months).find(key => months[key] === month) || month;
@@ -667,6 +684,7 @@ function processInvoiceData(data) {
 
         const now = new Date();
         const currentYear = now.getFullYear();
+        const baseYear = inferredInvoiceYear || currentYear;
 
         const monthReplacements = {
             "Jan": "Jan", "Feb": "Feb", "Mar": "Mar", "Apr": "Apr", "Mei": "May",
@@ -694,15 +712,15 @@ function processInvoiceData(data) {
 
         // Auto-assign missing years intelligently
         if (!start.year && !end.year) {
-            start.year = currentYear.toString();
+            start.year = baseYear.toString();
 
             const startMonthIndex = monthNumbers[start.month];
             const endMonthIndex = monthNumbers[end.month];
 
             if (startMonthIndex > endMonthIndex) {
-                end.year = (currentYear + 1).toString();
+                end.year = (baseYear + 1).toString();
             } else {
-                end.year = currentYear.toString();
+                end.year = baseYear.toString();
             }
         } else if (!start.year) {
             const endYearNum = parseInt(end.year, 10);
@@ -931,7 +949,7 @@ function processInvoiceData(data) {
         return monthMap[month] || month;
     };
 
-    const formatDateRange = (start, end, fallbackYear = "2025") => {
+    const formatDateRange = (start, end, fallbackYear = inferredInvoiceYear.toString()) => {
         if (!start || !end) return "N/A";
 
         const [startDay, startMonthIndo] = start.split(" ");
@@ -1016,7 +1034,7 @@ function processInvoiceData(data) {
             ? uniqueHotelLocations.join(", ")
             : '<span class="transportation_cities_text_options_class red_text_color_class">N/A</span>';
 
-        const defaultYear = 2025;
+        const defaultYear = inferredInvoiceYear;
 
         const monthReplacements = {
             "Mei": "May",
@@ -1101,7 +1119,7 @@ function processInvoiceData(data) {
         // Add all flight dates as <p> elements
         rowDiv.innerHTML = `
             <div>
-                <p contenteditable="true">${new Date().getFullYear()}</p>
+                <p contenteditable="true">${inferredInvoiceYear}</p>
             </div>
             <div>
                 <p class="duplicate_this_element_class" contenteditable="true" style="padding: 25px 0">${data.visaDyasNumber}</p>
