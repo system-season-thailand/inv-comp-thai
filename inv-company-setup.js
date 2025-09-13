@@ -684,7 +684,6 @@ function processInvoiceData(data) {
 
         const now = new Date();
         const currentYear = now.getFullYear();
-        const baseYear = inferredInvoiceYear || currentYear;
 
         const monthReplacements = {
             "Jan": "Jan", "Feb": "Feb", "Mar": "Mar", "Apr": "Apr", "Mei": "May",
@@ -710,17 +709,17 @@ function processInvoiceData(data) {
         const start = parseDateParts(startDate);
         const end = parseDateParts(endDate);
 
-        // Auto-assign missing years intelligently
+        // Auto-assign missing years intelligently using inferredInvoiceYear
         if (!start.year && !end.year) {
-            start.year = baseYear.toString();
+            start.year = inferredInvoiceYear.toString();
 
             const startMonthIndex = monthNumbers[start.month];
             const endMonthIndex = monthNumbers[end.month];
 
             if (startMonthIndex > endMonthIndex) {
-                end.year = (baseYear + 1).toString();
+                end.year = (inferredInvoiceYear + 1).toString();
             } else {
-                end.year = baseYear.toString();
+                end.year = inferredInvoiceYear.toString();
             }
         } else if (!start.year) {
             const endYearNum = parseInt(end.year, 10);
