@@ -1161,18 +1161,31 @@ function processInvoiceData(data) {
         const top_left_inv_company_orignal_div_id = document.getElementById("top_left_inv_company_orignal_div_id");
         const top_left_inv_company_golden_div_id = document.getElementById("top_left_inv_company_golden_div_id");
         const invoice_company_golden_under_guest_name_info_div = document.getElementById("invoice_company_golden_under_guest_name_info_div");
+        const invoice_company_al_ghazali_under_guest_name_info_div = document.getElementById("invoice_company_al_ghazali_under_guest_name_info_div");
 
 
 
         // Determine the orignal styling or the golden travel
         if (agencyUpper.includes("GOLDEN TRAVEL")) {
+
             top_left_inv_company_orignal_div_id.style.display = "none";
             top_left_inv_company_golden_div_id.style.display = "flex";
             invoice_company_golden_under_guest_name_info_div.style.display = "block";
+            invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
+
+        } else if (agencyUpper.includes("AL GHAZALI") || agencyUpper.includes("ALGHAZALI")) {
+
+            top_left_inv_company_orignal_div_id.style.display = "none";
+            top_left_inv_company_golden_div_id.style.display = "flex";
+            invoice_company_golden_under_guest_name_info_div.style.display = "none";
+            invoice_company_al_ghazali_under_guest_name_info_div.style.display = "block";
+
         } else {
+
             top_left_inv_company_orignal_div_id.style.display = "flex";
             top_left_inv_company_golden_div_id.style.display = "none";
             invoice_company_golden_under_guest_name_info_div.style.display = "none";
+            invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
         }
 
 
