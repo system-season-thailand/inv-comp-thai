@@ -248,8 +248,8 @@ const loadAllData = async () => {
 const fetchContentForName = async (name) => {
     try {
         const { data, error } = await supabase
-            .from('inv_comp_indo')
-            .select('inv_company_indo_content')
+            .from('inv_comp_thai')
+            .select('inv_company_thai_content')
             .eq('name', name)
             .single();
 
@@ -258,7 +258,7 @@ const fetchContentForName = async (name) => {
             return null;
         }
 
-        return data?.inv_company_indo_content?.trim() || null;
+        return data?.inv_company_thai_content?.trim() || null;
     } catch (error) {
         console.error("🔥 Unexpected error fetching content:", error);
         return null;
