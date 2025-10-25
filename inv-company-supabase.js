@@ -1,5 +1,5 @@
-const supabaseUrl = 'https://zrunsrimyijarswjfycw.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpydW5zcmlteWlqYXJzd2pmeWN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MjgzOTEsImV4cCI6MjA2MjMwNDM5MX0.UdW4LiIY-t1jZlrat1VUGnW0yRE7YEzW5SHbpkE29H8';
+const supabaseUrl = 'https://faugnoyhzkodtxfaczsb.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhdWdub3loemtvZHR4ZmFjenNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzOTQzMTEsImV4cCI6MjA3Njk3MDMxMX0.93c_Sgi2R581LX3IodILyp2yiaErlTDH405lBDoqdIs';
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 let new_or_imported_inv_company_variable = 'new_invoice_company';
