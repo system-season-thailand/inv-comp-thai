@@ -12,8 +12,8 @@ async function sendDataToSupabase() {
     for (const part of parts) {
         let segments = part.includes('_') ? part.split('_') : part.split('-');
         if (segments.length >= 3) {
-            extractedMonth = segments[1];
-            extractedYear = segments[2];
+            extractedMonth = segments[segments.length - 2];
+            extractedYear = segments[segments.length - 1];
         }
     }
 
@@ -164,7 +164,7 @@ const fetchBatchFromSupabase = async () => {
             break;
         }
 
-        
+
         // Map and push current batch into the global store (only names)
         allFetchedData.push(
             ...data.map(row => ({
@@ -365,6 +365,11 @@ const importContentForSelectedName = async (clickedGoogleSheetDataName) => {
 
 
         new_or_imported_inv_company_variable = 'imported_inv_company';
+
+
+        /* Find Out What is The Value of Moneth & Year of The Imported INV Comp */
+        /* console.log(document.getElementById('store_google_sheet_inv_orignal_month_value').innerText);
+        console.log(document.getElementById('store_google_sheet_inv_orignal_year_value').innerText); */
 
     } else {
 

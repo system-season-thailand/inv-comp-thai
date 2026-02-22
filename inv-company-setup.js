@@ -178,7 +178,7 @@ function openPdfDownloadBox() {
             let revSpan = document.getElementById("current_used_rev_number_span_id").innerText;
 
             // Build PDF name
-            let pdfName = `Proforma INV ${companyName} ${invNumber}_${month}_${year}`;
+            let pdfName = `Proforma INV ${companyName} thai_${invNumber}_${month}_${year}`;
             if (revSpan) pdfName += ` ${revSpan}`;
             pdfName += ` ${clientName}`;
 
@@ -196,7 +196,7 @@ function openPdfDownloadBox() {
             let revSpan = document.getElementById("current_used_rev_number_span_id").innerText;
 
             // Build PDF name
-            let pdfName = `Proforma INV ${companyName} ${invNumber}_${month}_${year}`;
+            let pdfName = `Proforma INV ${companyName} thai_${invNumber}_${month}_${year}`;
             if (revSpan) pdfName += ` ${revSpan}`;
             pdfName += ` ${clientName}`;
 
