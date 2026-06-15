@@ -166,6 +166,9 @@ function openPdfDownloadBox() {
 
     if (document.getElementById("dataInput").value !== '' || new_or_imported_inv_company_variable !== 'new_invoice_company') {
 
+        const storedAgency = (document.getElementById('store_google_sheet_company_name')?.innerText || '').toUpperCase();
+        const isAttar = storedAgency.includes("ATTAR");
+
         /* in 7 Apr 2026 delete the first if and keep only the else (I used it to avoid error in old packages) */
         if (!document.getElementById("current_used_company_name_p_id")) {
 
@@ -178,7 +181,7 @@ function openPdfDownloadBox() {
             let revSpan = document.getElementById("current_used_rev_number_span_id").innerText;
 
             // Build PDF name
-            let pdfName = `Proforma INV ${companyName} thai_${invNumber}_${month}_${year}`;
+            let pdfName = `${isAttar ? '' : 'Proforma '}INV ${companyName} thai_${invNumber}_${month}_${year}`;
             if (revSpan) pdfName += ` ${revSpan}`;
             pdfName += ` ${clientName}`;
 
@@ -196,7 +199,7 @@ function openPdfDownloadBox() {
             let revSpan = document.getElementById("current_used_rev_number_span_id").innerText;
 
             // Build PDF name
-            let pdfName = `Proforma INV ${companyName} thai_${invNumber}_${month}_${year}`;
+            let pdfName = `${isAttar ? '' : 'Proforma '}INV ${companyName} thai_${invNumber}_${month}_${year}`;
             if (revSpan) pdfName += ` ${revSpan}`;
             pdfName += ` ${clientName}`;
 
@@ -1154,7 +1157,7 @@ function processInvoiceData(data) {
 
         // Determine the currency
         let currency = "SAR"; // Default currency
-        if (agencyUpper.includes("AL EZZ") || agencyUpper.includes("ALEZZ") || agencyUpper.includes("AL FAKHAMAH") || agencyUpper.includes("ALFAKHAMAH") || agencyUpper.includes("ALAM ALRAYA")|| agencyUpper.includes("ALAM AL RAYA") || agencyUpper.includes("LUXE CHECK")) {
+        if (agencyUpper.includes("AL EZZ") || agencyUpper.includes("ALEZZ") || agencyUpper.includes("AL FAKHAMAH") || agencyUpper.includes("ALFAKHAMAH") || agencyUpper.includes("ALAM ALRAYA") || agencyUpper.includes("ALAM AL RAYA") || agencyUpper.includes("LUXE CHECK") || agencyUpper.includes("ATTAR")) {
             currency = "USD";
         } else if (guestByUpper.includes("RAYAN") || guestByUpper.includes("TURKI") || guestByUpper.includes("TURKEY") || guestByUpper.includes("TARIQ") || guestByUpper.includes("SECRET") || guestByUpper.includes("TURKY")) {
             currency = "BAHT";
@@ -1167,6 +1170,7 @@ function processInvoiceData(data) {
         const top_left_inv_company_golden_div_id = document.getElementById("top_left_inv_company_golden_div_id");
         const invoice_company_golden_under_guest_name_info_div = document.getElementById("invoice_company_golden_under_guest_name_info_div");
         const invoice_company_al_ghazali_under_guest_name_info_div = document.getElementById("invoice_company_al_ghazali_under_guest_name_info_div");
+        const invoice_company_attar_address_above_proforma_invoice_div = document.getElementById("invoice_company_attar_address_above_proforma_invoice_div");
 
 
 
@@ -1183,6 +1187,10 @@ function processInvoiceData(data) {
                 invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
             }
 
+            if (invoice_company_attar_address_above_proforma_invoice_div) {
+                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+            }
+
 
         } else if (agencyUpper.includes("AL GHAZALI") || agencyUpper.includes("ALGHAZALI")) {
 
@@ -1194,6 +1202,25 @@ function processInvoiceData(data) {
             /* in 11 Oct 2026 delete the following if condition (I used it tp avoid error in old inv) */
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
                 invoice_company_al_ghazali_under_guest_name_info_div.style.display = "block";
+            }
+
+            if (invoice_company_attar_address_above_proforma_invoice_div) {
+                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+            }
+
+
+        } else if (agencyUpper.includes("ATTAR")) {
+
+            top_left_inv_company_orignal_div_id.style.display = "flex";
+            top_left_inv_company_golden_div_id.style.display = "none";
+            invoice_company_golden_under_guest_name_info_div.style.display = "none";
+
+            if (invoice_company_al_ghazali_under_guest_name_info_div) {
+                invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
+            }
+
+            if (invoice_company_attar_address_above_proforma_invoice_div) {
+                invoice_company_attar_address_above_proforma_invoice_div.style.display = "block";
             }
 
 
@@ -1208,6 +1235,15 @@ function processInvoiceData(data) {
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
                 invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
             }
+
+            if (invoice_company_attar_address_above_proforma_invoice_div) {
+                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+            }
+        }
+
+        const proformaInvoiceTitle = document.getElementById("proforma_invoice_title_p_id");
+        if (proformaInvoiceTitle) {
+            proformaInvoiceTitle.innerText = agencyUpper.includes("ATTAR") ? "INVOICE" : "PROFORMA INVOICE";
         }
 
 
@@ -1230,19 +1266,34 @@ function processInvoiceData(data) {
         const paymentDetails1 = document.getElementById("payment_details_1");
         const paymentDetails2 = document.getElementById("payment_details_2");
         const paymentDetails3 = document.getElementById("payment_details_3");
+        const paymentDetails4 = document.getElementById("payment_details_4");
 
-        if (currency === "SAR") {
+        if (agencyUpper.includes("ATTAR") || agencyUpper.includes("RAWNAQ")) {
+
+            /* For ATTAR & RAWNAQ: hide all standard payment divs and show only payment_details_4 */
+            paymentDetails1.style.display = "none";
+            paymentDetails2.style.display = "none";
+            paymentDetails3.style.display = "none";
+
+            if (paymentDetails4) {
+                paymentDetails4.style.display = "block";
+            }
+
+        } else if (currency === "SAR") {
             paymentDetails1.style.display = "block";
             paymentDetails2.style.display = "none";
             paymentDetails3.style.display = "none";
+            if (paymentDetails4) paymentDetails4.style.display = "none";
         } else if (currency === "USD") {
             paymentDetails1.style.display = "none";
             paymentDetails2.style.display = "block";
             paymentDetails3.style.display = "none";
+            if (paymentDetails4) paymentDetails4.style.display = "none";
         } else {
             paymentDetails1.style.display = "none";
             paymentDetails2.style.display = "none";
             paymentDetails3.style.display = "block";
+            if (paymentDetails4) paymentDetails4.style.display = "none";
         }
 
 
