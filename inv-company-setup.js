@@ -1164,6 +1164,7 @@ function processInvoiceData(data) {
             /\bALAM AL RAYA\b/.test(agencyUpper) ||
             /\bRAWNAQ\b/.test(agencyUpper) ||
             /\bALFAKHAMAH\b/.test(agencyUpper) ||
+            /\bAL FAKHAMAH\b/.test(agencyUpper) ||
             /\bATTAR\b/.test(agencyUpper) ||
             /\bLUXE CHECK\b/.test(agencyUpper)
         ) {
@@ -1195,6 +1196,7 @@ function processInvoiceData(data) {
         if (agencyUpper.includes("GOLDEN TRAVEL")) {
 
             top_left_inv_company_orignal_div_id.style.display = "none";
+            top_left_inv_company_alfakhamah_div_id.style.display = "none";
             top_left_inv_company_golden_div_id.style.display = "flex";
             invoice_company_golden_under_guest_name_info_div.style.display = "block";
 
@@ -1212,6 +1214,7 @@ function processInvoiceData(data) {
         } else if (agencyUpper.includes("AL GHAZALI") || agencyUpper.includes("ALGHAZALI")) {
 
             top_left_inv_company_orignal_div_id.style.display = "none";
+            top_left_inv_company_alfakhamah_div_id.style.display = "none";
             top_left_inv_company_golden_div_id.style.display = "flex";
             invoice_company_golden_under_guest_name_info_div.style.display = "none";
 
@@ -1230,6 +1233,7 @@ function processInvoiceData(data) {
 
             top_left_inv_company_orignal_div_id.style.display = "flex";
             top_left_inv_company_golden_div_id.style.display = "none";
+            top_left_inv_company_alfakhamah_div_id.style.display = "none";
             invoice_company_golden_under_guest_name_info_div.style.display = "none";
 
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
@@ -1241,7 +1245,10 @@ function processInvoiceData(data) {
             }
 
 
-        } else if (/\bALFAKHAMAH\b/.test(agencyUpper)) {
+        } else if (
+            /\bALFAKHAMAH\b/i.test(agencyUpper) ||
+            /\bAL FAKHAMAH\b/i.test(agencyUpper)
+        ) {
 
             top_left_inv_company_orignal_div_id.style.display = "none";
             top_left_inv_company_alfakhamah_div_id.style.display = "flex";
@@ -1260,6 +1267,7 @@ function processInvoiceData(data) {
 
             top_left_inv_company_orignal_div_id.style.display = "flex";
             top_left_inv_company_golden_div_id.style.display = "none";
+            top_left_inv_company_alfakhamah_div_id.style.display = "none";
             invoice_company_golden_under_guest_name_info_div.style.display = "none";
 
 
