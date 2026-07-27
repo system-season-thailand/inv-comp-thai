@@ -181,7 +181,7 @@ function openPdfDownloadBox() {
             let revSpan = document.getElementById("current_used_rev_number_span_id").innerText;
 
             // Build PDF name
-            let pdfName = `${isAttarOrAthaar ? '' : 'Proforma '}INV ${companyName} indo_${invNumber}_${month}_${year}`;
+            let pdfName = `${isAttarOrAthaar ? '' : 'Proforma '}INV ${companyName} thai_${invNumber}_${month}_${year}`;
             if (revSpan) pdfName += ` ${revSpan}`;
             pdfName += ` ${clientName}`;
 
@@ -199,7 +199,7 @@ function openPdfDownloadBox() {
             let revSpan = document.getElementById("current_used_rev_number_span_id").innerText;
 
             // Build PDF name
-            let pdfName = `${isAttarOrAthaar ? '' : 'Proforma '}INV ${companyName} indo_${invNumber}_${month}_${year}`;
+            let pdfName = `${isAttarOrAthaar ? '' : 'Proforma '}INV ${companyName} thai_${invNumber}_${month}_${year}`;
             if (revSpan) pdfName += ` ${revSpan}`;
             pdfName += ` ${clientName}`;
 
@@ -1132,7 +1132,7 @@ function processInvoiceData(data) {
                 <p class="duplicate_this_element_class" contenteditable="true" style="padding: 25px 0">${data.visaDyasNumber}</p>
             </div>
             <div>
-                <p contenteditable="true">INDONESIA</p>
+                <p contenteditable="true">THAILAND</p>
             </div>
             <div style="border-right: 0.5px solid black;">
                 <p class="red_text_color_class flight_amount_text_options_class" contenteditable="true">${data.personAmount} Person</p>  
