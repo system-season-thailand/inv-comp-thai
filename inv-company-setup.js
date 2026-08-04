@@ -1201,6 +1201,7 @@ function processInvoiceData(data) {
             /\bALFAKHAMAH\b/.test(agencyUpper) ||
             /\bAL FAKHAMAH\b/.test(agencyUpper) ||
             /\bATTAR\b/.test(agencyUpper) ||
+            /\bCHRISMAR\b/.test(agencyUpper) ||
             /\bLUXE CHECK\b/.test(agencyUpper)
         ) {
             currency = "USD";
