@@ -167,7 +167,11 @@ function openPdfDownloadBox() {
     if (document.getElementById("dataInput").value !== '' || new_or_imported_inv_company_variable !== 'new_invoice_company') {
 
         const storedAgency = (document.getElementById('store_google_sheet_company_name')?.innerText || '').toUpperCase();
+        const storedGuestBy = (document.getElementById('store_google_sheet_guest_by')?.innerText || '').toUpperCase();
         const isAttarOrAthaar = /\b(?:ATTAR|ATHAAR)\b/i.test(storedAgency);
+
+        /* KOON drops the "Proforma" word from the file name, the same way ATTAR/ATHAAR does */
+        const isKoon = storedAgency.includes("KOON") || storedGuestBy.includes("KOON");
 
         /* The invoice number can also carry the sheet revision marker ("1565 Rev"), so keep
            the plain number inside the "_month_year" part and add the marker after it */
@@ -187,7 +191,7 @@ function openPdfDownloadBox() {
             let revSpan = document.getElementById("current_used_rev_number_span_id").innerText;
 
             // Build PDF name
-            let pdfName = `${isAttarOrAthaar ? '' : 'Proforma '}INV ${companyName} thai_${invNumber}_${month}_${year}`;
+            let pdfName = `${isAttarOrAthaar || isKoon ? '' : 'Proforma '}INV ${companyName} thai_${invNumber}_${month}_${year}`;
             if (sheetRevisionMarker) pdfName += ` ${sheetRevisionMarker}`;
             if (revSpan) pdfName += ` ${revSpan}`;
             pdfName += ` ${clientName}`;
@@ -206,7 +210,7 @@ function openPdfDownloadBox() {
             let revSpan = document.getElementById("current_used_rev_number_span_id").innerText;
 
             // Build PDF name
-            let pdfName = `${isAttarOrAthaar ? '' : 'Proforma '}INV ${companyName} thai_${invNumber}_${month}_${year}`;
+            let pdfName = `${isAttarOrAthaar || isKoon ? '' : 'Proforma '}INV ${companyName} thai_${invNumber}_${month}_${year}`;
             if (sheetRevisionMarker) pdfName += ` ${sheetRevisionMarker}`;
             if (revSpan) pdfName += ` ${revSpan}`;
             pdfName += ` ${clientName}`;
@@ -336,9 +340,12 @@ function processInvoiceData(data) {
 
 
     let travelAgencyUpper = travelAgency.toUpperCase();
+    let guestByUpper = (guestBy || "").toUpperCase();
     let finalTravelAgency;
 
-    if (travelAgencyUpper.includes("RAYAN")) {
+    if (travelAgencyUpper.includes("KAMARANI") || guestByUpper.includes("KAMARANI")) {
+        finalTravelAgency = "KAMARANI";
+    } else if (travelAgencyUpper.includes("RAYAN")) {
         finalTravelAgency = "MR. RAYAN";
     } else if (travelAgencyUpper.includes("SECRET")) {
         finalTravelAgency = "SECRET";
@@ -371,6 +378,10 @@ function processInvoiceData(data) {
     /* Store the values in the google sheet for later refrence (when importing) */
     document.getElementById('store_google_sheet_guest_name').innerText = clientName;
     document.getElementById('store_google_sheet_company_name').innerText = travelAgency;
+
+    /* Keep the raw "GUEST BY" value too, some rules read it instead of the agency alone */
+    const storeGuestByEl = document.getElementById('store_google_sheet_guest_by');
+    if (storeGuestByEl) storeGuestByEl.innerText = guestBy;
     document.getElementById('store_google_sheet_inv_number').innerText = formattedInvoiceNo;
 
 
@@ -1316,9 +1327,12 @@ function processInvoiceData(data) {
             }
         }
 
+        /* KOON, like ATTAR/ATHAAR, is titled without the "PROFORMA" word */
+        const isKoon = agencyUpper.includes("KOON") || guestByUpper.includes("KOON");
+
         const proformaInvoiceTitle = document.getElementById("proforma_invoice_title_p_id");
         if (proformaInvoiceTitle) {
-            proformaInvoiceTitle.innerText = /\b(?:ATTAR|ATHAAR)\b/i.test(agencyUpper)
+            proformaInvoiceTitle.innerText = /\b(?:ATTAR|ATHAAR)\b/i.test(agencyUpper) || isKoon
                 ? "INVOICE"
                 : "PROFORMA INVOICE";
         }
