@@ -1326,6 +1326,7 @@ function processInvoiceData(data) {
         ) {
 
             top_left_inv_company_orignal_div_id.style.display = "none";
+            top_left_inv_company_golden_div_id.style.display = "none";
             top_left_inv_company_alfakhamah_div_id.style.display = "flex";
             invoice_company_golden_under_guest_name_info_div.style.display = "none";
 
