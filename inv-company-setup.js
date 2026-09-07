@@ -1234,7 +1234,14 @@ function processInvoiceData(data) {
         const top_left_inv_company_alfakhamah_div_id = document.getElementById("top_left_inv_company_alfakhamah_div_id");
         const invoice_company_golden_under_guest_name_info_div = document.getElementById("invoice_company_golden_under_guest_name_info_div");
         const invoice_company_al_ghazali_under_guest_name_info_div = document.getElementById("invoice_company_al_ghazali_under_guest_name_info_div");
+        const invoice_company_cove_under_guest_name_info_div = document.getElementById("invoice_company_cove_under_guest_name_info_div");
         const invoice_company_attar_address_above_proforma_invoice_div = document.getElementById("invoice_company_attar_address_above_proforma_invoice_div");
+
+        /* Only the COVE branch below shows this block, so clear it on every run
+           rather than repeating a hide line in each of the other branches. */
+        if (invoice_company_cove_under_guest_name_info_div) {
+            invoice_company_cove_under_guest_name_info_div.style.display = "none";
+        }
 
 
 
@@ -1246,6 +1253,28 @@ function processInvoiceData(data) {
             top_left_inv_company_golden_div_id.style.display = "flex";
             invoice_company_golden_under_guest_name_info_div.style.display = "block";
 
+
+            /* in 11 Oct 2026 delete the following if condition (I used it tp avoid error in old inv) */
+            if (invoice_company_al_ghazali_under_guest_name_info_div) {
+                invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
+            }
+
+            if (invoice_company_attar_address_above_proforma_invoice_div) {
+                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+            }
+
+
+        } else if (/\bCOVE\b/.test(agencyUpper)) {
+
+            /* COVE prints on the golden letterhead, under its own address block */
+            top_left_inv_company_orignal_div_id.style.display = "none";
+            top_left_inv_company_alfakhamah_div_id.style.display = "none";
+            top_left_inv_company_golden_div_id.style.display = "flex";
+            invoice_company_golden_under_guest_name_info_div.style.display = "none";
+
+            if (invoice_company_cove_under_guest_name_info_div) {
+                invoice_company_cove_under_guest_name_info_div.style.display = "block";
+            }
 
             /* in 11 Oct 2026 delete the following if condition (I used it tp avoid error in old inv) */
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
