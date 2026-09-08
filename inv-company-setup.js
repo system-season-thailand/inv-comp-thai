@@ -1194,6 +1194,12 @@ function processInvoiceData(data) {
 
 
     const createTotalPriceRow = (total, travelAgency, guestByRow) => {
+
+        /* Older invoices were built before some of these blocks existed, so a
+           lookup can come back null. Set the display only on what is actually
+           on the page — a missing element used to throw and abort the render. */
+        const setDisplay = (el, value) => { if (el) el.style.display = value; };
+
         const totalDiv = document.createElement("div");
         totalDiv.id = "total_price_row_div_id";
 
@@ -1240,7 +1246,7 @@ function processInvoiceData(data) {
         /* Only the COVE branch below shows this block, so clear it on every run
            rather than repeating a hide line in each of the other branches. */
         if (invoice_company_cove_under_guest_name_info_div) {
-            invoice_company_cove_under_guest_name_info_div.style.display = "none";
+            setDisplay(invoice_company_cove_under_guest_name_info_div, "none");
         }
 
 
@@ -1248,75 +1254,75 @@ function processInvoiceData(data) {
         // Determine the orignal styling or the golden travel
         if (agencyUpper.includes("GOLDEN TRAVEL")) {
 
-            top_left_inv_company_orignal_div_id.style.display = "none";
-            top_left_inv_company_alfakhamah_div_id.style.display = "none";
-            top_left_inv_company_golden_div_id.style.display = "flex";
-            invoice_company_golden_under_guest_name_info_div.style.display = "block";
+            setDisplay(top_left_inv_company_orignal_div_id, "none");
+            setDisplay(top_left_inv_company_alfakhamah_div_id, "none");
+            setDisplay(top_left_inv_company_golden_div_id, "flex");
+            setDisplay(invoice_company_golden_under_guest_name_info_div, "block");
 
 
             /* in 11 Oct 2026 delete the following if condition (I used it tp avoid error in old inv) */
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
-                invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
+                setDisplay(invoice_company_al_ghazali_under_guest_name_info_div, "none");
             }
 
             if (invoice_company_attar_address_above_proforma_invoice_div) {
-                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+                setDisplay(invoice_company_attar_address_above_proforma_invoice_div, "none");
             }
 
 
         } else if (/\bCOVE\b/.test(agencyUpper)) {
 
             /* COVE prints on the golden letterhead, under its own address block */
-            top_left_inv_company_orignal_div_id.style.display = "none";
-            top_left_inv_company_alfakhamah_div_id.style.display = "none";
-            top_left_inv_company_golden_div_id.style.display = "flex";
-            invoice_company_golden_under_guest_name_info_div.style.display = "none";
+            setDisplay(top_left_inv_company_orignal_div_id, "none");
+            setDisplay(top_left_inv_company_alfakhamah_div_id, "none");
+            setDisplay(top_left_inv_company_golden_div_id, "flex");
+            setDisplay(invoice_company_golden_under_guest_name_info_div, "none");
 
             if (invoice_company_cove_under_guest_name_info_div) {
-                invoice_company_cove_under_guest_name_info_div.style.display = "block";
+                setDisplay(invoice_company_cove_under_guest_name_info_div, "block");
             }
 
             /* in 11 Oct 2026 delete the following if condition (I used it tp avoid error in old inv) */
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
-                invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
+                setDisplay(invoice_company_al_ghazali_under_guest_name_info_div, "none");
             }
 
             if (invoice_company_attar_address_above_proforma_invoice_div) {
-                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+                setDisplay(invoice_company_attar_address_above_proforma_invoice_div, "none");
             }
 
 
         } else if (agencyUpper.includes("AL GHAZALI") || agencyUpper.includes("ALGHAZALI")) {
 
-            top_left_inv_company_orignal_div_id.style.display = "none";
-            top_left_inv_company_alfakhamah_div_id.style.display = "none";
-            top_left_inv_company_golden_div_id.style.display = "flex";
-            invoice_company_golden_under_guest_name_info_div.style.display = "none";
+            setDisplay(top_left_inv_company_orignal_div_id, "none");
+            setDisplay(top_left_inv_company_alfakhamah_div_id, "none");
+            setDisplay(top_left_inv_company_golden_div_id, "flex");
+            setDisplay(invoice_company_golden_under_guest_name_info_div, "none");
 
 
             /* in 11 Oct 2026 delete the following if condition (I used it tp avoid error in old inv) */
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
-                invoice_company_al_ghazali_under_guest_name_info_div.style.display = "block";
+                setDisplay(invoice_company_al_ghazali_under_guest_name_info_div, "block");
             }
 
             if (invoice_company_attar_address_above_proforma_invoice_div) {
-                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+                setDisplay(invoice_company_attar_address_above_proforma_invoice_div, "none");
             }
 
 
         } else if (/\bATTAR\b/.test(agencyUpper)) {
 
-            top_left_inv_company_orignal_div_id.style.display = "flex";
-            top_left_inv_company_golden_div_id.style.display = "none";
-            top_left_inv_company_alfakhamah_div_id.style.display = "none";
-            invoice_company_golden_under_guest_name_info_div.style.display = "none";
+            setDisplay(top_left_inv_company_orignal_div_id, "flex");
+            setDisplay(top_left_inv_company_golden_div_id, "none");
+            setDisplay(top_left_inv_company_alfakhamah_div_id, "none");
+            setDisplay(invoice_company_golden_under_guest_name_info_div, "none");
 
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
-                invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
+                setDisplay(invoice_company_al_ghazali_under_guest_name_info_div, "none");
             }
 
             if (invoice_company_attar_address_above_proforma_invoice_div) {
-                invoice_company_attar_address_above_proforma_invoice_div.style.display = "block";
+                setDisplay(invoice_company_attar_address_above_proforma_invoice_div, "block");
             }
 
 
@@ -1325,35 +1331,35 @@ function processInvoiceData(data) {
             /\bAL FAKHAMAH\b/i.test(agencyUpper)
         ) {
 
-            top_left_inv_company_orignal_div_id.style.display = "none";
-            top_left_inv_company_golden_div_id.style.display = "none";
-            top_left_inv_company_alfakhamah_div_id.style.display = "flex";
-            invoice_company_golden_under_guest_name_info_div.style.display = "none";
+            setDisplay(top_left_inv_company_orignal_div_id, "none");
+            setDisplay(top_left_inv_company_golden_div_id, "none");
+            setDisplay(top_left_inv_company_alfakhamah_div_id, "flex");
+            setDisplay(invoice_company_golden_under_guest_name_info_div, "none");
 
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
-                invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
+                setDisplay(invoice_company_al_ghazali_under_guest_name_info_div, "none");
             }
 
             if (invoice_company_attar_address_above_proforma_invoice_div) {
-                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+                setDisplay(invoice_company_attar_address_above_proforma_invoice_div, "none");
             }
 
 
         } else {
 
-            top_left_inv_company_orignal_div_id.style.display = "flex";
-            top_left_inv_company_golden_div_id.style.display = "none";
-            top_left_inv_company_alfakhamah_div_id.style.display = "none";
-            invoice_company_golden_under_guest_name_info_div.style.display = "none";
+            setDisplay(top_left_inv_company_orignal_div_id, "flex");
+            setDisplay(top_left_inv_company_golden_div_id, "none");
+            setDisplay(top_left_inv_company_alfakhamah_div_id, "none");
+            setDisplay(invoice_company_golden_under_guest_name_info_div, "none");
 
 
             /* in 11 Oct 2026 delete the following if condition (I used it tp avoid error in old inv) */
             if (invoice_company_al_ghazali_under_guest_name_info_div) {
-                invoice_company_al_ghazali_under_guest_name_info_div.style.display = "none";
+                setDisplay(invoice_company_al_ghazali_under_guest_name_info_div, "none");
             }
 
             if (invoice_company_attar_address_above_proforma_invoice_div) {
-                invoice_company_attar_address_above_proforma_invoice_div.style.display = "none";
+                setDisplay(invoice_company_attar_address_above_proforma_invoice_div, "none");
             }
         }
 
@@ -1392,28 +1398,28 @@ function processInvoiceData(data) {
         if (/\bRAWNAQ\b/.test(agencyUpper)) {
 
             /* For ATTAR & RAWNAQ: hide all standard payment divs and show only payment_details_4 */
-            paymentDetails1.style.display = "none";
-            paymentDetails2.style.display = "none";
-            paymentDetails3.style.display = "none";
+            setDisplay(paymentDetails1, "none");
+            setDisplay(paymentDetails2, "none");
+            setDisplay(paymentDetails3, "none");
 
             if (paymentDetails4) {
-                paymentDetails4.style.display = "block";
+                setDisplay(paymentDetails4, "block");
             }
 
         } else if (currency === "SAR") {
-            paymentDetails1.style.display = "block";
-            paymentDetails2.style.display = "none";
-            paymentDetails3.style.display = "none";
+            setDisplay(paymentDetails1, "block");
+            setDisplay(paymentDetails2, "none");
+            setDisplay(paymentDetails3, "none");
             if (paymentDetails4) paymentDetails4.style.display = "none";
         } else if (currency === "USD") {
-            paymentDetails1.style.display = "none";
-            paymentDetails2.style.display = "block";
-            paymentDetails3.style.display = "none";
+            setDisplay(paymentDetails1, "none");
+            setDisplay(paymentDetails2, "block");
+            setDisplay(paymentDetails3, "none");
             if (paymentDetails4) paymentDetails4.style.display = "none";
         } else {
-            paymentDetails1.style.display = "none";
-            paymentDetails2.style.display = "none";
-            paymentDetails3.style.display = "block";
+            setDisplay(paymentDetails1, "none");
+            setDisplay(paymentDetails2, "none");
+            setDisplay(paymentDetails3, "block");
             if (paymentDetails4) paymentDetails4.style.display = "none";
         }
 
