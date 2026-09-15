@@ -123,6 +123,34 @@ body {
     transform: scale(1.02);
 }
 
+/* Currency buttons */
+#inv_company_currency_buttons_div_id {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#all_inv_office_insert_data_content .inv_company_currency_button_class {
+    padding: 8px 24px;
+    background: #ffffff;
+    color: #4a148c;
+    border: 2px solid #aed581;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#all_inv_office_insert_data_content .inv_company_currency_button_class:hover {
+    background: #f3e5f5;
+}
+
+#all_inv_office_insert_data_content .inv_company_currency_button_class.active_inv_company_currency_button_class {
+    background: linear-gradient(145deg, #4fc3f7, #f06292);
+    color: white;
+    border-color: transparent;
+}
+
 #highlighted_country_text {
     display: block;
     font-size: 1.5rem;

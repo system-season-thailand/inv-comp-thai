@@ -37,6 +37,13 @@
 
         <textarea id="dataInput" placeholder="Paste your data here"></textarea>
         <button onclick="playSoundEffect('click'); deleteTextAre()">Reset</button>
+
+        <!-- Buttons to switch the invoice currency and its bank details -->
+        <div id="inv_company_currency_buttons_div_id">
+            <button class="inv_company_currency_button_class" data-currency="SAR" onclick="changeInvoiceCurrency('SAR')">SAR</button>
+            <button class="inv_company_currency_button_class" data-currency="USD" onclick="changeInvoiceCurrency('USD')">USD</button>
+            <button class="inv_company_currency_button_class" data-currency="BAHT" onclick="changeInvoiceCurrency('BAHT')">BAHT</button>
+        </div>
     </div>
 
 

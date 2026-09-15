@@ -654,6 +654,8 @@ const importContentForSelectedName = async (clickedGoogleSheetDataName) => {
         setupTransportationCitiesOptions();
         // Call the function to apply the duplicate elements functionality
         setupDuplicateOptions("duplicate_this_element_class", "invoice_company_row_div_class");
+        /* Mark the currency button of the imported invoice */
+        highlightActiveCurrencyButton();
 
 
 

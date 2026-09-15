@@ -73,6 +73,88 @@ deleteTextAre = function () {
 
 
 
+
+/* The currency word written at the start of the amount inside the total rows */
+const invoiceCurrencyWordRegex = /^(\s*)(SAR|USD|IDR|BAHT)\b/i;
+
+
+/* Function to get the first text node that has real content inside an element */
+function getFirstFilledTextNode(element) {
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+        if (walker.currentNode.nodeValue.trim() !== "") return walker.currentNode;
+    }
+    return null;
+}
+
+
+/* Function to show the bank details that belong to the currency (RAWNAQ always uses its own bank details) */
+function showPaymentDetailsForCurrency(currency, agencyUpper) {
+    const paymentDetails1 = document.getElementById("payment_details_1");
+    const paymentDetails2 = document.getElementById("payment_details_2");
+    const paymentDetails3 = document.getElementById("payment_details_3");
+    const paymentDetails4 = document.getElementById("payment_details_4");
+
+    let visiblePaymentDetails;
+    if (/\bRAWNAQ\b/.test(agencyUpper)) {
+        visiblePaymentDetails = paymentDetails4;
+    } else if (currency === "SAR") {
+        visiblePaymentDetails = paymentDetails1;
+    } else if (currency === "USD") {
+        visiblePaymentDetails = paymentDetails2;
+    } else {
+        visiblePaymentDetails = paymentDetails3;
+    }
+
+    [paymentDetails1, paymentDetails2, paymentDetails3, paymentDetails4].forEach(paymentDetails => {
+        if (paymentDetails) paymentDetails.style.display = paymentDetails === visiblePaymentDetails ? "block" : "none";
+    });
+}
+
+
+/* Function to mark the currency button that matches the currency written in the total row */
+function highlightActiveCurrencyButton() {
+    const firstAmountParagraph = document.querySelector(".last_invoice_company_row_div_class > div:nth-child(2) p");
+    const firstTextNode = firstAmountParagraph ? getFirstFilledTextNode(firstAmountParagraph) : null;
+    const activeCurrency = (firstTextNode?.nodeValue.match(invoiceCurrencyWordRegex)?.[2] || "").toUpperCase();
+
+    document.querySelectorAll(".inv_company_currency_button_class").forEach(button => {
+        button.classList.toggle("active_inv_company_currency_button_class", button.dataset.currency === activeCurrency);
+    });
+}
+
+
+/* Function to switch the invoice currency from the currency buttons: rewrite the currency
+   word in the total rows and show the bank details that match it */
+function changeInvoiceCurrency(currency) {
+    const totalAmountParagraphs = document.querySelectorAll(".last_invoice_company_row_div_class > div:nth-child(2) p");
+
+    /* Nothing to change until an invoice with a total row is on the page */
+    if (totalAmountParagraphs.length === 0) {
+        playSoundEffect('error');
+        return;
+    }
+
+    playSoundEffect('click');
+
+    totalAmountParagraphs.forEach(paragraph => {
+        const firstTextNode = getFirstFilledTextNode(paragraph);
+
+        if (firstTextNode && invoiceCurrencyWordRegex.test(firstTextNode.nodeValue)) {
+            firstTextNode.nodeValue = firstTextNode.nodeValue.replace(invoiceCurrencyWordRegex, `$1${currency}`);
+        } else {
+            paragraph.insertBefore(document.createTextNode(`${currency}${"\u00A0".repeat(24)}`), paragraph.firstChild);
+        }
+    });
+
+    const storedAgency = (document.getElementById('store_google_sheet_company_name')?.innerText || '').toUpperCase();
+    showPaymentDetailsForCurrency(currency, storedAgency);
+
+    highlightActiveCurrencyButton();
+}
+
+
+
 /* Function to make the first letter of each word to be capital */
 const toTitleCase = (str) => {
     return str
@@ -1390,38 +1472,7 @@ function processInvoiceData(data) {
 
 
         // Toggle payment details visibility based on currency
-        const paymentDetails1 = document.getElementById("payment_details_1");
-        const paymentDetails2 = document.getElementById("payment_details_2");
-        const paymentDetails3 = document.getElementById("payment_details_3");
-        const paymentDetails4 = document.getElementById("payment_details_4");
-
-        if (/\bRAWNAQ\b/.test(agencyUpper)) {
-
-            /* For ATTAR & RAWNAQ: hide all standard payment divs and show only payment_details_4 */
-            setDisplay(paymentDetails1, "none");
-            setDisplay(paymentDetails2, "none");
-            setDisplay(paymentDetails3, "none");
-
-            if (paymentDetails4) {
-                setDisplay(paymentDetails4, "block");
-            }
-
-        } else if (currency === "SAR") {
-            setDisplay(paymentDetails1, "block");
-            setDisplay(paymentDetails2, "none");
-            setDisplay(paymentDetails3, "none");
-            if (paymentDetails4) paymentDetails4.style.display = "none";
-        } else if (currency === "USD") {
-            setDisplay(paymentDetails1, "none");
-            setDisplay(paymentDetails2, "block");
-            setDisplay(paymentDetails3, "none");
-            if (paymentDetails4) paymentDetails4.style.display = "none";
-        } else {
-            setDisplay(paymentDetails1, "none");
-            setDisplay(paymentDetails2, "none");
-            setDisplay(paymentDetails3, "block");
-            if (paymentDetails4) paymentDetails4.style.display = "none";
-        }
+        showPaymentDetailsForCurrency(currency, agencyUpper);
 
 
 
@@ -1496,6 +1547,9 @@ function processInvoiceData(data) {
     if (transport) createTransportationRow(transport);
     if (visa) createVisaRow(visa);
     if (total) createTotalPriceRow(total, travelAgency, guestByRow);
+
+    /* Mark the currency button of the new invoice */
+    highlightActiveCurrencyButton();
 
 
 
